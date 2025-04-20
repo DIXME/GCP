@@ -24,17 +24,27 @@ struct rectRectCollisonData {
     bool touchingNy; // negtive pos.y
 
     void update(){
-        // we get have beacuse when we display the rects we going to center them
-        Vec2 whA = a.getSizeHalf();
-        Vec2 whB = b.getSizeHalf();
-        Vec2 posA = a.pos;
-        Vec2 posB = b.pos;
+        Vec2 Aleft  = Vec2(a.pos.x - a.whv.x / 2, a.pos.y);
+        Vec2 Aright = Vec2(a.pos.x + a.whv.x / 2, a.pos.y);
+        Vec2 Aup    = Vec2(a.pos.x, a.pos.y - a.whv.y / 2);
+        Vec2 Adown  = Vec2(a.pos.x, a.pos.y + a.whv.y / 2);
+        //----------------------a&b----------------------\\ 
+        Vec2 Bleft  = Vec2(b.pos.x - b.whv.x / 2, b.pos.y);
+        Vec2 Bright = Vec2(b.pos.x + b.whv.x / 2, b.pos.y);
+        Vec2 Bup    = Vec2(b.pos.x, b.pos.y - b.whv.y / 2);
+        Vec2 Bdown  = Vec2(b.pos.x, b.pos.y + b.whv.y / 2);     
 
-        touchingX = this.Aleft.x < this.Bright.x && this.Bleft.x < this.Aright.x
-        touchingY = this.Bdown.y > this.Aup.y && this.Adown.y > this.Bup.y
-        touchingXY = touchingX && touchingY
+        touchingX = Aleft.x < Bright.x && Bleft.x < Aright.x;
+        touchingY = Bdown.y > Aup.y && Adown.y > Bup.y;
+        touchingXY = touchingX && touchingY;
         // these two are used to find wich quadrent the object falls into
-        touchingNx = this.b.pos.x > this.a.pos.x
-        touchingNy = this.a.pos.y > this.b.pos.y
+        touchingNx = b.pos.x > a.pos.x;
+        touchingNy = a.pos.y > b.pos.y;
     }
-}
+
+    rectRectCollisonData(rect2d_t a, rect2d_t b) : 
+        a(a), b(b), touchingX(false), touchingY(false),
+        touchingXY(false), touchingNx(false), touchingNy(false) {
+        //
+    }
+};
